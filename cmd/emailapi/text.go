@@ -29,7 +29,7 @@ func textHandler(w http.ResponseWriter, r *http.Request) {
 
 	site := "mitchell"
 	if strings.Contains(r.Referer(), "katie") {
-		site = cfg.SendToK
+		site = "kaite"
 	}
 
 	twilio.SendTextMessage(m.Name, m.Email, m.Message, site, cfg.TwilioSID, cfg.TwilioAuthToken)

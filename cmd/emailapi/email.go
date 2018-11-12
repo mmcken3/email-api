@@ -46,6 +46,8 @@ func emailHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // SendEmail sends an email to email address e.
+// WIP will probably change as gmail has improved email stuff now from
+// go code.
 func (se *Email) SendEmail(contact contact.Contact) error {
 	var b bytes.Buffer
 
