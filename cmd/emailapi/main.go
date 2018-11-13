@@ -7,6 +7,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/joho/godotenv"
 	"github.com/kelseyhightower/envconfig"
+	"github.com/mmcken3/email-api/internal/middleware"
 )
 
 type config struct {
@@ -36,6 +37,9 @@ func main() {
 	}
 
 	r := chi.NewRouter()
+
+	r.Use(middleware.Middleware)
+
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Health Check OK"))
 	})

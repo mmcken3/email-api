@@ -6,12 +6,17 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/go-chi/render"
 	"github.com/mmcken3/email-api/internal/twilio"
 )
 
 type message struct {
 	Name    string `json:"name"`
 	Email   string `json:"email_address"`
+	Message string `json:"message"`
+}
+
+type resp struct {
 	Message string `json:"message"`
 }
 
@@ -24,6 +29,7 @@ func textHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println("err : ", err)
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		render.JSON(w, r, resp{Message: "failure"})
 		return
 	}
 
@@ -36,4 +42,5 @@ func textHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("Message sent")
 
 	w.WriteHeader(http.StatusOK)
+	render.JSON(w, r, resp{Message: "success"})
 }
