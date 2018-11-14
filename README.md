@@ -8,6 +8,9 @@ use cases if you wanted to use this.
 
 *Still under development*
 
+The send text endpoint is pretty much ready to go and works for the hard coded numbers. The email one 
+is the main endpoint still being worked on.
+
 ## Development
 
 Download the source:
