@@ -8,6 +8,12 @@
   version = "v3.3.3"
 
 [[projects]]
+  name = "github.com/go-chi/render"
+  packages = ["."]
+  revision = "3215478343fbc559bd3fc08f7031bb134d6bdad5"
+  version = "v1.0.1"
+
+[[projects]]
   name = "github.com/joho/godotenv"
   packages = ["."]
   revision = "23d116af351c84513e1946b527c88823e476be13"
@@ -28,6 +34,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "909fcc0616f2bab73250a4a32c463d04c87e1ec21c5278789ea2ab694bd5f05a"
+  inputs-digest = "a4fa918f3d8e22319d3ee9dd2106a9e352ff7ad3cafc8cafd41c2a4ea8bd42fd"
   solver-name = "gps-cdcl"
   solver-version = 1
