@@ -1,12 +1,16 @@
 # Email API
 
-This is a repo in develpoment to serve as an email and text message API for personal websites. If you 
-want to use a contact sheet but not pay money for a third party or write PHP then this API could be used.
-The plan for myself is to stand this up and use the text or email endpoint to send myself the messages
-from contact forms on personal sites. The email and Twilio integration could be changed for your own
-use cases if you wanted to use this.
+This is a tool to serve as an email and text message API for personal websites. If you 
+want to use a contact form but not set up a third party tool or write your own backend then this could be used.
+You could download the binary of this repo or download and build yourself to start the API. It will
+take simple 3 field forms for the post bodies and then send those forms onto the set up recievers of
+the forms in the Email API.
 
 *Still under development*
+
+Right now it is hard coded to work for only a few personal websites and the email endpoint is not set up
+at all. I am currently working on setting it up to make the emails it sends too/from and the Twilio numbers
+it sends to/from configuable so that this API can be plug and played for anyones personal websites.
 
 The send text endpoint is pretty much ready to go and works for the hard coded numbers. The email one 
 is the main endpoint still being worked on.
