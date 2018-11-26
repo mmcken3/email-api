@@ -6,14 +6,13 @@ You could download the binary of this repo or download and build yourself to sta
 take simple 3 field forms for the post bodies and then send those forms onto the set up recievers of
 the forms in the Email API.
 
+The text endpoint is set up so that this API could be stood up by anyone with a Twilio account and configured
+to send messages to any number they like through a phone number in that account. This auth and phone number
+set up is configured throuhg environment variables.
+
 *Still under development*
 
-Right now it is hard coded to work for only a few personal websites and the email endpoint is not set up
-at all. I am currently working on setting it up to make the emails it sends too/from and the Twilio numbers
-it sends to/from configuable so that this API can be plug and played for anyones personal websites.
-
-The send text endpoint is pretty much ready to go and works for the hard coded numbers. The email one 
-is the main endpoint still being worked on.
+Right the email endpoint is not set up at all.
 
 ## Development
 
@@ -52,6 +51,17 @@ JSON body is like this:
         "email_address": "test@test.com",
         "message": "This is an example message"
     }
+
+## Configuration
+
+Environment variables that need to be set in order to run the Email API. This is your twilio account
+auth, the Twilio phone numbers text come from in your account and then number you want text to be
+sent too. These phone numbers must be in the format with a plus like: "+11234567890".
+
+    TWILIO_ACCOUNT_SID
+    TWILIO_AUTH_TOKEN
+    FROM_TWILIO_NUMBER
+    TO_PHONE_NUMBER
 
 ## Deploying
 

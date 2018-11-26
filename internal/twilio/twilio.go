@@ -10,25 +10,31 @@ import (
 	"time"
 )
 
-// SendTextMessage does
-func SendTextMessage(name string, email string, message string, site string, sid string, token string) {
-	urlStr := "https://api.twilio.com/2010-04-01/Accounts/" + sid + "/Messages.json"
+// Config contains all items needed for a twilio message.
+type Config struct {
+	Message    string
+	SID        string
+	Token      string
+	ToNumber   string
+	FromNumber string
+}
 
-	// Create message body
-	msgBody := fmt.Sprintf("You have been contacted by %v. %v. Message: %v. Site: %v", name, email, message, site)
+// SendTextMessage does
+func SendTextMessage(config Config) {
+	urlStr := "https://api.twilio.com/2010-04-01/Accounts/" + config.SID + "/Messages.json"
 
 	// Set up rand
 	rand.Seed(time.Now().Unix())
 
 	msgData := url.Values{}
-	msgData.Set("To", fmt.Sprintf("+18437373287"))
-	msgData.Set("From", "+17123509887")
-	msgData.Set("Body", msgBody)
+	msgData.Set("To", config.ToNumber)
+	msgData.Set("From", config.FromNumber)
+	msgData.Set("Body", config.Message)
 	msgDataReader := *strings.NewReader(msgData.Encode())
 
 	client := &http.Client{}
 	req, _ := http.NewRequest("POST", urlStr, &msgDataReader)
-	req.SetBasicAuth(sid, token)
+	req.SetBasicAuth(config.SID, config.Token)
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 

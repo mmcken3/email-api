@@ -11,15 +11,18 @@ import (
 )
 
 type config struct {
-	UserName        string `envconfig:"EMAIL_USER"`
-	Password        string `envconfig:"EMAIL_PASSWORD"`
-	Server          string `envconfig:"EMAIL_SERVER"`
-	Port            string `envconfig:"EMAIL_PORT"`
-	SendToM         string `envconfig:"EMAIL_M"`
-	SendToK         string `envconfig:"EMAIL_K"`
-	FromAddress     string `envconfig:"EMAIL_FROM"`
+	UserName    string `envconfig:"EMAIL_USER"`
+	Password    string `envconfig:"EMAIL_PASSWORD"`
+	Server      string `envconfig:"EMAIL_SERVER"`
+	Port        string `envconfig:"EMAIL_PORT"`
+	SendToM     string `envconfig:"EMAIL_M"`
+	SendToK     string `envconfig:"EMAIL_K"`
+	FromAddress string `envconfig:"EMAIL_FROM"`
+
 	TwilioSID       string `envconfig:"TWILIO_ACCOUNT_SID" required:"true"`
 	TwilioAuthToken string `envconfig:"TWILIO_AUTH_TOKEN" required:"true"`
+	FromNumber      string `envconfig:"FROM_TWILIO_NUMBER" required:"true"`
+	ToNumber        string `envconfig:"TO_PHONE_NUMBER" required:"true"`
 }
 
 var cfg config

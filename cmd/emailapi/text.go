@@ -2,28 +2,24 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
-	"strings"
 
 	"github.com/go-chi/render"
+	"github.com/mmcken3/email-api/internal/contact"
 	"github.com/mmcken3/email-api/internal/twilio"
 )
 
-type message struct {
-	Name    string `json:"name"`
-	Email   string `json:"email_address"`
-	Message string `json:"message"`
-}
-
+// resp is a struct to be used as the json reponse holding a message.
 type resp struct {
 	Message string `json:"message"`
 }
 
 func textHandler(w http.ResponseWriter, r *http.Request) {
-	log.Println("Handling email request")
+	log.Println("Handling text request")
 
-	var m message
+	var m contact.Contact
 	err := json.NewDecoder(r.Body).Decode(&m)
 	r.Body.Close()
 	if err != nil {
@@ -33,12 +29,19 @@ func textHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	site := "mitchell"
-	if strings.Contains(r.Referer(), "katie") {
-		site = "kaite"
+	site := r.Referer()
+
+	// Create message body
+	textMsgBody := fmt.Sprintf("You have been contacted by %v. %v. Message: %v. Site: %v", m.Name, m.Email, m.Message, site)
+	twilioConfig := twilio.Config{
+		Message:    textMsgBody,
+		SID:        cfg.TwilioSID,
+		Token:      cfg.TwilioAuthToken,
+		ToNumber:   cfg.ToNumber,
+		FromNumber: cfg.FromNumber,
 	}
 
-	twilio.SendTextMessage(m.Name, m.Email, m.Message, site, cfg.TwilioSID, cfg.TwilioAuthToken)
+	twilio.SendTextMessage(twilioConfig)
 	log.Println("Message sent")
 
 	w.WriteHeader(http.StatusOK)
