@@ -1,78 +1,47 @@
 package main
 
 import (
-	"bytes"
-	"fmt"
+	"encoding/json"
 	"log"
 	"net/http"
-	"net/smtp"
-	"strings"
-	"time"
 
+	"github.com/go-chi/render"
 	"github.com/mmcken3/email-api/internal/contact"
-	"github.com/pkg/errors"
+	"github.com/mmcken3/email-api/internal/gmail"
 )
-
-// Email is a struct used for sending go emails.
-type Email struct {
-	UserName    string
-	Password    string
-	Server      string
-	Port        string
-	SendTo      []string
-	FromAddress string
-}
 
 func emailHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("Handling email request")
 
-	toSend := cfg.SendToM
-	if strings.Contains(r.Referer(), "katie") {
-		toSend = cfg.SendToK
+	// Decode the contact from the POST body
+	var m contact.Contact
+	err := json.NewDecoder(r.Body).Decode(&m)
+	r.Body.Close()
+	if err != nil {
+		log.Println("err : ", err)
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		render.JSON(w, r, resp{Message: "failure"})
+		return
 	}
 
-	sendEmail := Email{
+	sendEmail := gmail.Email{
 		UserName:    cfg.UserName,
 		Password:    cfg.Password,
 		Server:      cfg.Server,
 		Port:        cfg.Port,
-		SendTo:      []string{toSend},
-		FromAddress: cfg.FromAddress,
+		SendTo:      []string{cfg.SendTo},
+		FromAddress: cfg.UserName,
 	}
 
-	log.Println(sendEmail)
-
-	w.WriteHeader(http.StatusOK)
-}
-
-// SendEmail sends an email to email address e.
-// WIP will probably change as gmail has improved email stuff now from
-// go code.
-func (se *Email) SendEmail(contact contact.Contact) error {
-	var b bytes.Buffer
-
-	b.Write([]byte("To: "))
-
-	for _, email := range se.SendTo {
-		b.Write([]byte(email + ", "))
-	}
-
-	b.Write([]byte("\r\nSubject: Contact From Website"))
-	b.Write([]byte(time.Now().Format("Jan-01-06 03:04 PM") + "\r\n"))
-	b.Write([]byte("\r\nType: "))
-	b.Write([]byte(("Stuff is here") + "\n"))
-	b.Write([]byte("\n\n"))
-	fmt.Println(b.String())
-
-	//msg := []byte("\r\nSubject: CU Fix It Request\r\nMessage Content Here")
-
-	// Set up authentication information
-	auth := smtp.PlainAuth("", se.UserName, se.Password, se.Server)
-
-	msg := b.Bytes()
-	err := smtp.SendMail(se.Server+":"+se.Port, auth, se.FromAddress, se.SendTo, msg)
+	err = sendEmail.SendEmail(m.Name, m.Email, m.Message)
 	if err != nil {
-		return errors.Wrapf(err, "Failed when sending email.")
+		log.Println("err : ", err)
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		render.JSON(w, r, resp{Message: "failure"})
+		return
 	}
-	return nil
+
+	log.Println("Email sent success")
+	w.WriteHeader(http.StatusOK)
+	render.JSON(w, r, resp{Message: "success"})
 }

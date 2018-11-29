@@ -11,13 +11,11 @@ import (
 )
 
 type config struct {
-	UserName    string `envconfig:"EMAIL_USER"`
-	Password    string `envconfig:"EMAIL_PASSWORD"`
-	Server      string `envconfig:"EMAIL_SERVER"`
-	Port        string `envconfig:"EMAIL_PORT"`
-	SendToM     string `envconfig:"EMAIL_M"`
-	SendToK     string `envconfig:"EMAIL_K"`
-	FromAddress string `envconfig:"EMAIL_FROM"`
+	UserName string `envconfig:"EMAIL_USER"`
+	Password string `envconfig:"EMAIL_PASSWORD"`
+	Server   string `envconfig:"EMAIL_SERVER"`
+	Port     string `envconfig:"EMAIL_PORT"`
+	SendTo   string `envconfig:"SEND_TO"`
 
 	TwilioSID       string `envconfig:"TWILIO_ACCOUNT_SID" required:"true"`
 	TwilioAuthToken string `envconfig:"TWILIO_AUTH_TOKEN" required:"true"`
@@ -46,7 +44,7 @@ func main() {
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Health Check OK"))
 	})
-	// r.Post("/v1/send/email", emailHandler)
+	r.Post("/v1/send/email", emailHandler)
 	r.Post("/v1/send/text", textHandler)
 
 	http.ListenAndServe(":3000", r)

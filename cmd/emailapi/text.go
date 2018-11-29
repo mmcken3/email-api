@@ -16,9 +16,12 @@ type resp struct {
 	Message string `json:"message"`
 }
 
+// textHandler will send a text to the configured number using the configured
+// twilio account or return a failed response
 func textHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("Handling text request")
 
+	// Decode the contact from the POST body
 	var m contact.Contact
 	err := json.NewDecoder(r.Body).Decode(&m)
 	r.Body.Close()
@@ -41,9 +44,10 @@ func textHandler(w http.ResponseWriter, r *http.Request) {
 		FromNumber: cfg.FromNumber,
 	}
 
+	// send message using twilio package
 	twilio.SendTextMessage(twilioConfig)
-	log.Println("Message sent")
 
+	log.Println("Message sent sucess")
 	w.WriteHeader(http.StatusOK)
 	render.JSON(w, r, resp{Message: "success"})
 }

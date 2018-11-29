@@ -6,13 +6,15 @@ You could download the binary of this repo or download and build yourself to sta
 take simple 3 field forms for the post bodies and then send those forms onto the set up receivers of
 the forms in the Email API.
 
+The email endpoint is set up so that this API could be stood up by anyone with a Gmail account and configured
+to send messages to any email they like through the configured host email. This auth and email address
+set up is configured through environment variables.
+
 The text endpoint is set up so that this API could be stood up by anyone with a Twilio account and configured
 to send messages to any number they like through a phone number in that account. This auth and phone number
 set up is configured through environment variables.
 
 *Still under development*
-
-Right the email endpoint is not set up at all.
 
 ## Development
 
@@ -62,6 +64,17 @@ sent too. These phone numbers must be in the format with a plus like: "+11234567
     TWILIO_AUTH_TOKEN
     FROM_TWILIO_NUMBER
     TO_PHONE_NUMBER
+
+These env variables are for your email endpoint. EMAIL_USER is your email account to end from and
+its password. Then for gmail these are the server and port that you would want to use. Anyone
+can configure this to work with their email and send to a specific email as well.
+
+    EMAIL_USER
+    EMAIL_PASSWORD
+    EMAIL_SERVER='smtp.gmail.com'
+    EMAIL_PORT='587'
+    SEND_TO
+    EMAIL_FROM
 
 ## Deploying
 
