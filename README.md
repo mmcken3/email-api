@@ -1,14 +1,14 @@
 # Email API
 
-This is a tool to serve as an email and text message API for personal websites. If you 
+This is a tool to serve as an email and text message API for personal websites. If you
 want to use a contact form but not set up a third party tool or write your own backend then this could be used.
 You could download the binary of this repo or download and build yourself to start the API. It will
-take simple 3 field forms for the post bodies and then send those forms onto the set up recievers of
+take simple 3 field forms for the post bodies and then send those forms onto the set up receivers of
 the forms in the Email API.
 
 The text endpoint is set up so that this API could be stood up by anyone with a Twilio account and configured
 to send messages to any number they like through a phone number in that account. This auth and phone number
-set up is configured throuhg environment variables.
+set up is configured through environment variables.
 
 *Still under development*
 
@@ -33,7 +33,7 @@ The APi can then be hit locally at http://localhost:3000.
 ## Email API Endpoints
 
 HTTP request | Description
------------- | ------------- 
+------------ | -------------
 **GET** /health    | returns a health check for the server |
 **POST** /v1/send/email    | submits a request to send an email with data from the body |
 **POST** /v1/send/text    | submits a request to send an text with data from the body |
@@ -54,7 +54,7 @@ JSON body is like this:
 
 ## Configuration
 
-Environment variables that need to be set in order to run the Email API. This is your twilio account
+Environment variables that need to be set in order to run the Email API. This is your Twilio account
 auth, the Twilio phone numbers text come from in your account and then number you want text to be
 sent too. These phone numbers must be in the format with a plus like: "+11234567890".
 
