@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"encoding/json"
@@ -7,10 +7,9 @@ import (
 
 	"github.com/go-chi/render"
 	"github.com/mmcken3/email-api/internal/contact"
-	"github.com/mmcken3/email-api/internal/gmail"
 )
 
-func emailHandler(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) sendEmailHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("Handling email request")
 
 	// Decode the contact from the POST body
@@ -24,16 +23,7 @@ func emailHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	sendEmail := gmail.Email{
-		UserName:    cfg.UserName,
-		Password:    cfg.Password,
-		Server:      cfg.Server,
-		Port:        cfg.Port,
-		SendTo:      []string{cfg.SendTo},
-		FromAddress: cfg.UserName,
-	}
-
-	err = sendEmail.SendEmail(m.Name, m.Email, m.Message)
+	err = h.emailHandler.SendEmail(m.Name, m.Email, m.Message)
 	if err != nil {
 		log.Println("err : ", err)
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)

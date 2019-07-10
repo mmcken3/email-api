@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"encoding/json"
@@ -18,7 +18,7 @@ type resp struct {
 
 // textHandler will send a text to the configured number using the configured
 // twilio account or return a failed response
-func textHandler(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) sendTextHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("Handling text request")
 
 	// Decode the contact from the POST body
@@ -36,16 +36,9 @@ func textHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Create message body
 	textMsgBody := fmt.Sprintf("You have been contacted by %v. %v. Message: %v. Site: %v", m.Name, m.Email, m.Message, site)
-	twilioConfig := twilio.Config{
-		Message:    textMsgBody,
-		SID:        cfg.TwilioSID,
-		Token:      cfg.TwilioAuthToken,
-		ToNumber:   cfg.ToNumber,
-		FromNumber: cfg.FromNumber,
-	}
 
 	// send message using twilio package
-	twilio.SendTextMessage(twilioConfig)
+	twilio.SendTextMessage(h.twilioConfig, textMsgBody)
 
 	log.Println("Message sent sucess")
 	w.WriteHeader(http.StatusOK)
