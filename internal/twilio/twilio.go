@@ -12,7 +12,6 @@ import (
 
 // Config contains all items needed for a twilio message.
 type Config struct {
-	Message    string
 	SID        string
 	Token      string
 	ToNumber   string
@@ -20,7 +19,7 @@ type Config struct {
 }
 
 // SendTextMessage does
-func SendTextMessage(config Config) {
+func SendTextMessage(config Config, message string) {
 	urlStr := "https://api.twilio.com/2010-04-01/Accounts/" + config.SID + "/Messages.json"
 
 	// Set up rand
@@ -29,7 +28,7 @@ func SendTextMessage(config Config) {
 	msgData := url.Values{}
 	msgData.Set("To", config.ToNumber)
 	msgData.Set("From", config.FromNumber)
-	msgData.Set("Body", config.Message)
+	msgData.Set("Body", message)
 	msgDataReader := *strings.NewReader(msgData.Encode())
 
 	client := &http.Client{}
